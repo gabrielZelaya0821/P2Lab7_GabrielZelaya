@@ -41,9 +41,11 @@ public class GoogleUndead extends javax.swing.JFrame {
         archivos_mover = new javax.swing.JMenuItem();
         archivos_eliminar = new javax.swing.JMenuItem();
         pp_carpetas = new javax.swing.JPopupMenu();
+        carpetas_crear = new javax.swing.JMenuItem();
         carpetas_mover = new javax.swing.JMenuItem();
         carpetas_eliminar = new javax.swing.JMenuItem();
-        carpetas_crear = new javax.swing.JMenuItem();
+        pp_papelera = new javax.swing.JPopupMenu();
+        restaurar = new javax.swing.JMenuItem();
         barra_izquierda = new javax.swing.JPanel();
         btn_destacados = new javax.swing.JPanel();
         txt_destacados = new javax.swing.JLabel();
@@ -81,6 +83,14 @@ public class GoogleUndead extends javax.swing.JFrame {
         });
         pp_archivos.add(archivos_eliminar);
 
+        carpetas_crear.setText("Crear");
+        carpetas_crear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                carpetas_crearActionPerformed(evt);
+            }
+        });
+        pp_carpetas.add(carpetas_crear);
+
         carpetas_mover.setText("Mover");
         carpetas_mover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,13 +107,13 @@ public class GoogleUndead extends javax.swing.JFrame {
         });
         pp_carpetas.add(carpetas_eliminar);
 
-        carpetas_crear.setText("Crear");
-        carpetas_crear.addActionListener(new java.awt.event.ActionListener() {
+        restaurar.setText("Restaurar");
+        restaurar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                carpetas_crearActionPerformed(evt);
+                restaurarActionPerformed(evt);
             }
         });
-        pp_carpetas.add(carpetas_crear);
+        pp_papelera.add(restaurar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("googleUndead");
@@ -255,6 +265,11 @@ public class GoogleUndead extends javax.swing.JFrame {
         treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Destacados");
         destacados_tree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         destacados_tree.setPreferredSize(new java.awt.Dimension(84, 20));
+        destacados_tree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                destacados_treeMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(destacados_tree);
 
         javax.swing.GroupLayout bg_destacadosLayout = new javax.swing.GroupLayout(bg_destacados);
@@ -281,6 +296,11 @@ public class GoogleUndead extends javax.swing.JFrame {
         treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Papelera");
         papelera_tree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         papelera_tree.setPreferredSize(new java.awt.Dimension(84, 20));
+        papelera_tree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                papelera_treeMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(papelera_tree);
 
         javax.swing.GroupLayout bg_papeleraLayout = new javax.swing.GroupLayout(bg_papelera);
@@ -372,22 +392,29 @@ public class GoogleUndead extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_newMouseClicked
 
     private void miUnidad_treeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_miUnidad_treeMouseClicked
-        if (evt.isMetaDown()) {
-            Object v1
-                    = miUnidad_tree.getSelectionPath().
-                            getLastPathComponent();
-            DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+        try {
+            if (evt.isMetaDown()) {
+                Object v1
+                        = miUnidad_tree.getSelectionPath().
+                                getLastPathComponent();
+                DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
 
-            if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
-                pp_carpetas.show(miUnidad_tree, evt.getX(), evt.getY());
-            } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
-                pp_archivos.show(miUnidad_tree, evt.getX(), evt.getY());
+                if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
+                    pp_carpetas.show(miUnidad_tree, evt.getX(), evt.getY());
+                } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
+                    pp_archivos.show(miUnidad_tree, evt.getX(), evt.getY());
+                }
             }
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_miUnidad_treeMouseClicked
 
     private void carpetas_moverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_moverActionPerformed
-        
+        if (bg_miUnidad.isVisible()) {
+            mover(miUnidad_tree);
+        } else {
+            mover(destacados_tree);
+        }
     }//GEN-LAST:event_carpetas_moverActionPerformed
 
     private void archivos_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_eliminarActionPerformed
@@ -399,61 +426,65 @@ public class GoogleUndead extends javax.swing.JFrame {
     }//GEN-LAST:event_carpetas_eliminarActionPerformed
 
     private void archivos_moverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_moverActionPerformed
-        
+        if (bg_miUnidad.isVisible()) {
+            mover(miUnidad_tree);
+        } else {
+            mover(destacados_tree);
+        }
     }//GEN-LAST:event_archivos_moverActionPerformed
 
     private void btn_destacadosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseEntered
-        btn_destacados.setBackground(new Color(232,240,254));
+        btn_destacados.setBackground(new Color(232, 240, 254));
     }//GEN-LAST:event_btn_destacadosMouseEntered
 
     private void btn_destacadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseClicked
-        btn_miUnidad.setBackground(new Color(255,255,255));
-        btn_papelera.setBackground(new Color(255,255,255));
-        btn_destacados.setBackground(new Color(232,240,254));
-        
+        btn_miUnidad.setBackground(new Color(255, 255, 255));
+        btn_papelera.setBackground(new Color(255, 255, 255));
+        btn_destacados.setBackground(new Color(232, 240, 254));
+
         bg_destacados.setVisible(true);
         bg_miUnidad.setVisible(false);
         bg_papelera.setVisible(false);
     }//GEN-LAST:event_btn_destacadosMouseClicked
 
     private void btn_miUnidadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseEntered
-         btn_miUnidad.setBackground(new Color(232,240,254));
+        btn_miUnidad.setBackground(new Color(232, 240, 254));
     }//GEN-LAST:event_btn_miUnidadMouseEntered
 
     private void btn_miUnidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseClicked
-        btn_miUnidad.setBackground(new Color(232,240,254));
-        btn_papelera.setBackground(new Color(255,255,255));
-        btn_destacados.setBackground(new Color(255,255,255));
-        
+        btn_miUnidad.setBackground(new Color(232, 240, 254));
+        btn_papelera.setBackground(new Color(255, 255, 255));
+        btn_destacados.setBackground(new Color(255, 255, 255));
+
         bg_destacados.setVisible(false);
         bg_miUnidad.setVisible(true);
         bg_papelera.setVisible(false);
     }//GEN-LAST:event_btn_miUnidadMouseClicked
 
     private void btn_papeleraMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseEntered
-        btn_papelera.setBackground(new Color(232,240,254));
+        btn_papelera.setBackground(new Color(232, 240, 254));
     }//GEN-LAST:event_btn_papeleraMouseEntered
 
     private void btn_papeleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseClicked
-        btn_miUnidad.setBackground(new Color(255,255,255));
-        btn_papelera.setBackground(new Color(232,240,254));
-        btn_destacados.setBackground(new Color(255,255,255));
-        
+        btn_miUnidad.setBackground(new Color(255, 255, 255));
+        btn_papelera.setBackground(new Color(232, 240, 254));
+        btn_destacados.setBackground(new Color(255, 255, 255));
+
         bg_destacados.setVisible(false);
         bg_miUnidad.setVisible(false);
         bg_papelera.setVisible(true);
     }//GEN-LAST:event_btn_papeleraMouseClicked
 
     private void btn_destacadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseExited
-        btn_destacados.setBackground(new Color(255,255,255));
+        btn_destacados.setBackground(new Color(255, 255, 255));
     }//GEN-LAST:event_btn_destacadosMouseExited
 
     private void btn_miUnidadMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseExited
-        btn_miUnidad.setBackground(new Color(255,255,255));
+        btn_miUnidad.setBackground(new Color(255, 255, 255));
     }//GEN-LAST:event_btn_miUnidadMouseExited
 
     private void btn_papeleraMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseExited
-        btn_papelera.setBackground(new Color(255,255,255));
+        btn_papelera.setBackground(new Color(255, 255, 255));
     }//GEN-LAST:event_btn_papeleraMouseExited
 
     private void carpetas_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_crearActionPerformed
@@ -465,10 +496,10 @@ public class GoogleUndead extends javax.swing.JFrame {
         }
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
         Object v1
-                    = miUnidad_tree.getSelectionPath().
-                            getLastPathComponent();
+                = miUnidad_tree.getSelectionPath().
+                        getLastPathComponent();
         DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
-        
+
         int option = JOptionPane.showConfirmDialog(
                 this, "¿Desea crear una carpeta?", "Crear", JOptionPane.YES_NO_OPTION);
         String nombre;
@@ -484,7 +515,7 @@ public class GoogleUndead extends javax.swing.JFrame {
 
             DefaultMutableTreeNode c = new DefaultMutableTreeNode(carpeta);
             for (int i = 0; i < raiz.getChildCount(); i++) {
-                if(raiz.getChildAt(i).equals(nodo_seleccionado)){
+                if (raiz.getChildAt(i).equals(nodo_seleccionado)) {
                     ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(c);
                 }
             }
@@ -501,7 +532,7 @@ public class GoogleUndead extends javax.swing.JFrame {
 
             DefaultMutableTreeNode a = new DefaultMutableTreeNode(archivo);
             for (int i = 0; i < raiz.getChildCount(); i++) {
-                if(raiz.getChildAt(i).equals(nodo_seleccionado)){
+                if (raiz.getChildAt(i).equals(nodo_seleccionado)) {
                     ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(a);
                 }
             }
@@ -509,24 +540,80 @@ public class GoogleUndead extends javax.swing.JFrame {
         modelo.reload();
     }//GEN-LAST:event_carpetas_crearActionPerformed
 
-    private void eliminarNodo(JTree arbol){
+    private void destacados_treeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_destacados_treeMouseClicked
+        try {
+            if (evt.isMetaDown()) {
+                Object v1
+                        = destacados_tree.getSelectionPath().
+                                getLastPathComponent();
+                DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+
+                if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
+                    pp_carpetas.show(destacados_tree, evt.getX(), evt.getY());
+                } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
+                    pp_archivos.show(destacados_tree, evt.getX(), evt.getY());
+                }
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_destacados_treeMouseClicked
+
+    private void papelera_treeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_papelera_treeMouseClicked
+        try {
+            if (evt.isMetaDown()) {
+                pp_papelera.show(papelera_tree, evt.getX(), evt.getY());
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_papelera_treeMouseClicked
+
+    private void restaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restaurarActionPerformed
+        mover(papelera_tree);
+    }//GEN-LAST:event_restaurarActionPerformed
+
+    private void eliminarNodo(JTree arbol) {
         Object v1
-                    = arbol.getSelectionPath().
-                            getLastPathComponent();
-            DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
-        
+                = arbol.getSelectionPath().
+                        getLastPathComponent();
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+
         //elimina del arbol
-        DefaultTreeModel modeloArbol = (DefaultTreeModel)arbol.getModel();
+        DefaultTreeModel modeloArbol = (DefaultTreeModel) arbol.getModel();
         DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
         raizArbol.remove(nodo_seleccionado);
         modeloArbol.reload();
         //agrega a la papelera
-        DefaultTreeModel modelo = (DefaultTreeModel)papelera_tree.getModel();
-        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)modelo.getRoot();
-        raiz.add( (DefaultMutableTreeNode) nodo_seleccionado);
+        DefaultTreeModel modelo = (DefaultTreeModel) papelera_tree.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+        raiz.add((DefaultMutableTreeNode) nodo_seleccionado);
         modelo.reload();
     }
-    
+
+    private void mover(JTree arbol) {
+        Object v1
+                = arbol.getSelectionPath().
+                        getLastPathComponent();
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+        //elimina del arbol
+        DefaultTreeModel modeloArbol = (DefaultTreeModel) arbol.getModel();
+        DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
+        raizArbol.remove(nodo_seleccionado);
+        modeloArbol.reload();
+
+        DefaultTreeModel modelo;
+        if (arbol.equals(miUnidad_tree)) {
+            //agrega a miUnidad
+            modelo = (DefaultTreeModel) destacados_tree.getModel();
+        } else if(arbol.equals(papelera_tree)){
+            modelo = (DefaultTreeModel) miUnidad_tree.getModel();
+        }else {
+            modelo = (DefaultTreeModel) miUnidad_tree.getModel();
+        }
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+        raiz.add((DefaultMutableTreeNode) nodo_seleccionado);
+        modelo.reload();
+    }
+
     private String cadenaAleatoria(int longitud) {
         String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
@@ -576,6 +663,8 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JProgressBar pbar_descarga;
     private javax.swing.JPopupMenu pp_archivos;
     private javax.swing.JPopupMenu pp_carpetas;
+    private javax.swing.JPopupMenu pp_papelera;
+    private javax.swing.JMenuItem restaurar;
     private javax.swing.JLabel txt_destacados;
     private javax.swing.JLabel txt_miUnidad;
     private javax.swing.JLabel txt_papelera;
