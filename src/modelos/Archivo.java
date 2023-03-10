@@ -51,5 +51,10 @@ public class Archivo {
     public void setTamaño(double tamaño) {
         this.tamaño = tamaño;
     }
+
+    @Override
+    public String toString() {
+        return nombre + extension;
+    }
     
 }

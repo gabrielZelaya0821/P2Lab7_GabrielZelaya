@@ -57,5 +57,10 @@ public class Carpeta {
     public void setCarpetas(ArrayList<Carpeta> carpetas) {
         this.carpetas = carpetas;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
     
 }
