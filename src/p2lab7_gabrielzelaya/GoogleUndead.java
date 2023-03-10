@@ -4,6 +4,12 @@
  */
 package p2lab7_gabrielzelaya;
 
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.JOptionPane;
+import modelos.Archivo;
+import modelos.Carpeta;
+
 /**
  *
  * @author gabri
@@ -33,6 +39,8 @@ public class GoogleUndead extends javax.swing.JFrame {
         txt_miUnidad = new javax.swing.JLabel();
         btn_papelera = new javax.swing.JPanel();
         txt_papelera = new javax.swing.JLabel();
+        img_logo = new javax.swing.JLabel();
+        btn_new = new javax.swing.JButton();
         bg_miUnidad = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         miUnidad_tree = new javax.swing.JTree();
@@ -56,8 +64,8 @@ public class GoogleUndead extends javax.swing.JFrame {
         btn_destacados.setBackground(new java.awt.Color(255, 255, 255));
 
         txt_destacados.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
-        txt_destacados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txt_destacados.setText("Destacados");
+        txt_destacados.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txt_destacados.setText("        Destacados");
 
         javax.swing.GroupLayout btn_destacadosLayout = new javax.swing.GroupLayout(btn_destacados);
         btn_destacados.setLayout(btn_destacadosLayout);
@@ -70,14 +78,13 @@ public class GoogleUndead extends javax.swing.JFrame {
             .addComponent(txt_destacados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        barra_izquierda.add(btn_destacados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 220, 50));
+        barra_izquierda.add(btn_destacados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 220, 50));
 
         btn_miUnidad.setBackground(new java.awt.Color(255, 255, 255));
         btn_miUnidad.setPreferredSize(new java.awt.Dimension(181, 55));
 
         txt_miUnidad.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
-        txt_miUnidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txt_miUnidad.setText("Mi Unidad");
+        txt_miUnidad.setText("        Mi Unidad");
 
         javax.swing.GroupLayout btn_miUnidadLayout = new javax.swing.GroupLayout(btn_miUnidad);
         btn_miUnidad.setLayout(btn_miUnidadLayout);
@@ -87,17 +94,17 @@ public class GoogleUndead extends javax.swing.JFrame {
         );
         btn_miUnidadLayout.setVerticalGroup(
             btn_miUnidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txt_miUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+            .addComponent(txt_miUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        barra_izquierda.add(btn_miUnidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 71, 220, -1));
+        barra_izquierda.add(btn_miUnidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 220, 50));
 
         btn_papelera.setBackground(new java.awt.Color(255, 255, 255));
         btn_papelera.setPreferredSize(new java.awt.Dimension(181, 55));
 
         txt_papelera.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
-        txt_papelera.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txt_papelera.setText("Papelera");
+        txt_papelera.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txt_papelera.setText("        Papelera");
 
         javax.swing.GroupLayout btn_papeleraLayout = new javax.swing.GroupLayout(btn_papelera);
         btn_papelera.setLayout(btn_papeleraLayout);
@@ -107,10 +114,24 @@ public class GoogleUndead extends javax.swing.JFrame {
         );
         btn_papeleraLayout.setVerticalGroup(
             btn_papeleraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txt_papelera, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+            .addComponent(txt_papelera, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        barra_izquierda.add(btn_papelera, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 220, -1));
+        barra_izquierda.add(btn_papelera, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 220, 50));
+
+        img_logo.setFont(new java.awt.Font("Roboto Light", 0, 24)); // NOI18N
+        img_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drive_logo.png"))); // NOI18N
+        img_logo.setText("Undead");
+        barra_izquierda.add(img_logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
+
+        btn_new.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        btn_new.setText("Nuevo");
+        btn_new.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_newMouseClicked(evt);
+            }
+        });
+        barra_izquierda.add(btn_new, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 110, 30));
 
         getContentPane().add(barra_izquierda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 545));
 
@@ -215,38 +236,54 @@ public class GoogleUndead extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GoogleUndead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GoogleUndead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GoogleUndead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GoogleUndead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btn_newMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_newMouseClicked
+        int option = JOptionPane.showConfirmDialog(
+                this, "¿Desea crear una carpeta?", "Crear", JOptionPane.YES_NO_OPTION);
+        String nombre;
+        String link;
+        if (option == JOptionPane.YES_OPTION) {
+            nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre:");
+            link = cadenaAleatoria(5);
+            Carpeta carpeta = new Carpeta(
+                    nombre,
+                    "dive.google.com/"+link
+            );
+            carpetas.add(carpeta);
+        } else {
+            nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre:");
+            link = cadenaAleatoria(10);
+            Archivo archivo = new Archivo(
+                    nombre,
+                    "dive.google.com/"+link,
+                    JOptionPane.showInputDialog(this, "Ingrese la extensión:"),
+                    Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
+            );
+            archivos.add(archivo);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_btn_newMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GoogleUndead().setVisible(true);
-            }
+    private String cadenaAleatoria(int longitud) {
+        // El banco de caracteres
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        // La cadena en donde iremos agregando un carácter aleatorio
+        String cadena = "";
+        for (int x = 0; x < longitud; x++) {
+            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            cadena += caracterAleatorio;
+        }
+        return cadena;
+    }
+    
+    private int numeroAleatorioEnRango(int minimo, int maximo) {
+        // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+    }
+
+    public static void main(String args[]) {
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new GoogleUndead().setVisible(true);
         });
     }
 
@@ -258,8 +295,10 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JPanel bg_papelera;
     private javax.swing.JPanel btn_destacados;
     private javax.swing.JPanel btn_miUnidad;
+    private javax.swing.JButton btn_new;
     private javax.swing.JPanel btn_papelera;
     private javax.swing.JTree destacados_tree;
+    private javax.swing.JLabel img_logo;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -271,4 +310,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JLabel txt_miUnidad;
     private javax.swing.JLabel txt_papelera;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<Carpeta> carpetas = new ArrayList<>();
+    private ArrayList<Archivo> archivos = new ArrayList<>();
 }

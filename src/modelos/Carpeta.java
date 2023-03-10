@@ -12,6 +12,13 @@ public class Carpeta {
     private ArrayList<Archivo> archivos;
     private ArrayList<Carpeta> carpetas;
 
+    public Carpeta(String nombre, String link) {
+        this.nombre = nombre;
+        this.link = link;
+        this.archivos = new ArrayList<>();
+        this.carpetas = new ArrayList<>();
+    }
+
     public Carpeta(String nombre, String link, ArrayList<Archivo> archivos, ArrayList<Carpeta> carpetas) {
         this.nombre = nombre;
         this.link = link;
