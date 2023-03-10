@@ -4,6 +4,7 @@
  */
 package p2lab7_gabrielzelaya;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.DefaultListModel;
@@ -42,10 +43,7 @@ public class GoogleUndead extends javax.swing.JFrame {
         pp_carpetas = new javax.swing.JPopupMenu();
         carpetas_mover = new javax.swing.JMenuItem();
         carpetas_eliminar = new javax.swing.JMenuItem();
-        miUnidad_mostrarCarpetas = new javax.swing.JDialog();
-        bg_miUnidad_listaCarpetas = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        miUnidad_lista_carpetas = new javax.swing.JList<>();
+        carpetas_crear = new javax.swing.JMenuItem();
         barra_izquierda = new javax.swing.JPanel();
         btn_destacados = new javax.swing.JPanel();
         txt_destacados = new javax.swing.JLabel();
@@ -99,39 +97,13 @@ public class GoogleUndead extends javax.swing.JFrame {
         });
         pp_carpetas.add(carpetas_eliminar);
 
-        miUnidad_mostrarCarpetas.setBackground(new java.awt.Color(255, 255, 255));
-
-        bg_miUnidad_listaCarpetas.setBackground(new java.awt.Color(255, 255, 255));
-
-        jScrollPane4.setViewportView(miUnidad_lista_carpetas);
-
-        javax.swing.GroupLayout bg_miUnidad_listaCarpetasLayout = new javax.swing.GroupLayout(bg_miUnidad_listaCarpetas);
-        bg_miUnidad_listaCarpetas.setLayout(bg_miUnidad_listaCarpetasLayout);
-        bg_miUnidad_listaCarpetasLayout.setHorizontalGroup(
-            bg_miUnidad_listaCarpetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_miUnidad_listaCarpetasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        bg_miUnidad_listaCarpetasLayout.setVerticalGroup(
-            bg_miUnidad_listaCarpetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_miUnidad_listaCarpetasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout miUnidad_mostrarCarpetasLayout = new javax.swing.GroupLayout(miUnidad_mostrarCarpetas.getContentPane());
-        miUnidad_mostrarCarpetas.getContentPane().setLayout(miUnidad_mostrarCarpetasLayout);
-        miUnidad_mostrarCarpetasLayout.setHorizontalGroup(
-            miUnidad_mostrarCarpetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_miUnidad_listaCarpetas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        miUnidad_mostrarCarpetasLayout.setVerticalGroup(
-            miUnidad_mostrarCarpetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_miUnidad_listaCarpetas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        carpetas_crear.setText("Crear");
+        carpetas_crear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                carpetas_crearActionPerformed(evt);
+            }
+        });
+        pp_carpetas.add(carpetas_crear);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("googleUndead");
@@ -142,6 +114,17 @@ public class GoogleUndead extends javax.swing.JFrame {
         barra_izquierda.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btn_destacados.setBackground(new java.awt.Color(255, 255, 255));
+        btn_destacados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_destacadosMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_destacadosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_destacadosMouseExited(evt);
+            }
+        });
 
         txt_destacados.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
         txt_destacados.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -162,6 +145,17 @@ public class GoogleUndead extends javax.swing.JFrame {
 
         btn_miUnidad.setBackground(new java.awt.Color(255, 255, 255));
         btn_miUnidad.setPreferredSize(new java.awt.Dimension(181, 55));
+        btn_miUnidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_miUnidadMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_miUnidadMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_miUnidadMouseExited(evt);
+            }
+        });
 
         txt_miUnidad.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
         txt_miUnidad.setText("        Mi Unidad");
@@ -181,6 +175,17 @@ public class GoogleUndead extends javax.swing.JFrame {
 
         btn_papelera.setBackground(new java.awt.Color(255, 255, 255));
         btn_papelera.setPreferredSize(new java.awt.Dimension(181, 55));
+        btn_papelera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_papeleraMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_papeleraMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_papeleraMouseExited(evt);
+            }
+        });
 
         txt_papelera.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
         txt_papelera.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -247,6 +252,8 @@ public class GoogleUndead extends javax.swing.JFrame {
 
         bg_destacados.setBackground(new java.awt.Color(255, 255, 255));
 
+        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Destacados");
+        destacados_tree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         destacados_tree.setPreferredSize(new java.awt.Dimension(84, 20));
         jScrollPane2.setViewportView(destacados_tree);
 
@@ -271,6 +278,8 @@ public class GoogleUndead extends javax.swing.JFrame {
 
         bg_papelera.setBackground(new java.awt.Color(255, 255, 255));
 
+        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Papelera");
+        papelera_tree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         papelera_tree.setPreferredSize(new java.awt.Dimension(84, 20));
         jScrollPane3.setViewportView(papelera_tree);
 
@@ -370,20 +379,15 @@ public class GoogleUndead extends javax.swing.JFrame {
             DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
 
             if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
-                pp_carpetas.show(this, evt.getX(), evt.getY());
+                pp_carpetas.show(miUnidad_tree, evt.getX(), evt.getY());
             } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
-                pp_archivos.show(this, evt.getX(), evt.getY());
+                pp_archivos.show(miUnidad_tree, evt.getX(), evt.getY());
             }
         }
     }//GEN-LAST:event_miUnidad_treeMouseClicked
 
     private void carpetas_moverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_moverActionPerformed
-        miUnidad_mostrarCarpetas.setVisible(true);
-        DefaultListModel modelo = (DefaultListModel)miUnidad_lista_carpetas.getModel();
-        for (Carpeta carpeta : carpetas) {
-            modelo.addElement(carpeta);
-        }
-        miUnidad_lista_carpetas.setModel(modelo);
+        
     }//GEN-LAST:event_carpetas_moverActionPerformed
 
     private void archivos_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_eliminarActionPerformed
@@ -398,12 +402,125 @@ public class GoogleUndead extends javax.swing.JFrame {
         
     }//GEN-LAST:event_archivos_moverActionPerformed
 
+    private void btn_destacadosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseEntered
+        btn_destacados.setBackground(new Color(232,240,254));
+    }//GEN-LAST:event_btn_destacadosMouseEntered
+
+    private void btn_destacadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseClicked
+        btn_miUnidad.setBackground(new Color(255,255,255));
+        btn_papelera.setBackground(new Color(255,255,255));
+        btn_destacados.setBackground(new Color(232,240,254));
+        
+        bg_destacados.setVisible(true);
+        bg_miUnidad.setVisible(false);
+        bg_papelera.setVisible(false);
+    }//GEN-LAST:event_btn_destacadosMouseClicked
+
+    private void btn_miUnidadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseEntered
+         btn_miUnidad.setBackground(new Color(232,240,254));
+    }//GEN-LAST:event_btn_miUnidadMouseEntered
+
+    private void btn_miUnidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseClicked
+        btn_miUnidad.setBackground(new Color(232,240,254));
+        btn_papelera.setBackground(new Color(255,255,255));
+        btn_destacados.setBackground(new Color(255,255,255));
+        
+        bg_destacados.setVisible(false);
+        bg_miUnidad.setVisible(true);
+        bg_papelera.setVisible(false);
+    }//GEN-LAST:event_btn_miUnidadMouseClicked
+
+    private void btn_papeleraMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseEntered
+        btn_papelera.setBackground(new Color(232,240,254));
+    }//GEN-LAST:event_btn_papeleraMouseEntered
+
+    private void btn_papeleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseClicked
+        btn_miUnidad.setBackground(new Color(255,255,255));
+        btn_papelera.setBackground(new Color(232,240,254));
+        btn_destacados.setBackground(new Color(255,255,255));
+        
+        bg_destacados.setVisible(false);
+        bg_miUnidad.setVisible(false);
+        bg_papelera.setVisible(true);
+    }//GEN-LAST:event_btn_papeleraMouseClicked
+
+    private void btn_destacadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_destacadosMouseExited
+        btn_destacados.setBackground(new Color(255,255,255));
+    }//GEN-LAST:event_btn_destacadosMouseExited
+
+    private void btn_miUnidadMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_miUnidadMouseExited
+        btn_miUnidad.setBackground(new Color(255,255,255));
+    }//GEN-LAST:event_btn_miUnidadMouseExited
+
+    private void btn_papeleraMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_papeleraMouseExited
+        btn_papelera.setBackground(new Color(255,255,255));
+    }//GEN-LAST:event_btn_papeleraMouseExited
+
+    private void carpetas_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_crearActionPerformed
+        DefaultTreeModel modelo;
+        if (bg_miUnidad.isVisible()) {
+            modelo = (DefaultTreeModel) miUnidad_tree.getModel();
+        } else {
+            modelo = (DefaultTreeModel) destacados_tree.getModel();
+        }
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+        Object v1
+                    = miUnidad_tree.getSelectionPath().
+                            getLastPathComponent();
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+        
+        int option = JOptionPane.showConfirmDialog(
+                this, "¿Desea crear una carpeta?", "Crear", JOptionPane.YES_NO_OPTION);
+        String nombre;
+        String link;
+        if (option == JOptionPane.YES_OPTION) {
+            nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre:");
+            link = cadenaAleatoria(5);
+            Carpeta carpeta = new Carpeta(
+                    nombre,
+                    "dive.google.com/" + link
+            );
+            carpetas.add(carpeta);
+
+            DefaultMutableTreeNode c = new DefaultMutableTreeNode(carpeta);
+            for (int i = 0; i < raiz.getChildCount(); i++) {
+                if(raiz.getChildAt(i).equals(nodo_seleccionado)){
+                    ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(c);
+                }
+            }
+        } else {
+            nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre:");
+            link = cadenaAleatoria(10);
+            Archivo archivo = new Archivo(
+                    nombre,
+                    "dive.google.com/" + link,
+                    JOptionPane.showInputDialog(this, "Ingrese la extensión:"),
+                    Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
+            );
+            archivos.add(archivo);
+
+            DefaultMutableTreeNode a = new DefaultMutableTreeNode(archivo);
+            for (int i = 0; i < raiz.getChildCount(); i++) {
+                if(raiz.getChildAt(i).equals(nodo_seleccionado)){
+                    ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(a);
+                }
+            }
+        }
+        modelo.reload();
+    }//GEN-LAST:event_carpetas_crearActionPerformed
+
     private void eliminarNodo(JTree arbol){
         Object v1
                     = arbol.getSelectionPath().
                             getLastPathComponent();
             DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
-            
+        
+        //elimina del arbol
+        DefaultTreeModel modeloArbol = (DefaultTreeModel)arbol.getModel();
+        DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
+        raizArbol.remove(nodo_seleccionado);
+        modeloArbol.reload();
+        //agrega a la papelera
         DefaultTreeModel modelo = (DefaultTreeModel)papelera_tree.getModel();
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)modelo.getRoot();
         raiz.add( (DefaultMutableTreeNode) nodo_seleccionado);
@@ -440,12 +557,12 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JPanel bg_descarga;
     private javax.swing.JPanel bg_destacados;
     private javax.swing.JPanel bg_miUnidad;
-    private javax.swing.JPanel bg_miUnidad_listaCarpetas;
     private javax.swing.JPanel bg_papelera;
     private javax.swing.JPanel btn_destacados;
     private javax.swing.JPanel btn_miUnidad;
     private javax.swing.JButton btn_new;
     private javax.swing.JPanel btn_papelera;
+    private javax.swing.JMenuItem carpetas_crear;
     private javax.swing.JMenuItem carpetas_eliminar;
     private javax.swing.JMenuItem carpetas_mover;
     private javax.swing.JTree destacados_tree;
@@ -454,9 +571,6 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JList<String> miUnidad_lista_carpetas;
-    private javax.swing.JDialog miUnidad_mostrarCarpetas;
     private javax.swing.JTree miUnidad_tree;
     private javax.swing.JTree papelera_tree;
     private javax.swing.JProgressBar pbar_descarga;
