@@ -25,6 +25,9 @@ public class GoogleUndead extends javax.swing.JFrame {
         initComponents();
         bg_mostrarDescargas.setVisible(false);
         agregarBinarioALista();
+        for (Carpeta carpeta : carpetas) {
+            
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -669,6 +672,7 @@ public class GoogleUndead extends javax.swing.JFrame {
                     nombre,
                     path.concat(link)
             );
+            ((Carpeta)nodo_seleccionado.getUserObject()).getCarpetas().add(carpeta);
             carpetas.add(carpeta);
             carpetasBin.escribirBinario(carpeta);
 
@@ -687,6 +691,7 @@ public class GoogleUndead extends javax.swing.JFrame {
                     JOptionPane.showInputDialog(this, "Ingrese la extensión:"),
                     Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
             );
+            ((Carpeta)nodo_seleccionado.getUserObject()).getArchivos().add(archivo);
             archivos.add(archivo);
             archivosBin.escribirBinario(archivo);
 
