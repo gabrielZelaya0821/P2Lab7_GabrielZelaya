@@ -5,6 +5,7 @@
 package p2lab7_gabrielzelaya;
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.DefaultListModel;
@@ -46,6 +47,7 @@ public class GoogleUndead extends javax.swing.JFrame {
         carpetas_eliminar = new javax.swing.JMenuItem();
         pp_papelera = new javax.swing.JPopupMenu();
         restaurar = new javax.swing.JMenuItem();
+        eliminar_papelera = new javax.swing.JMenuItem();
         barra_izquierda = new javax.swing.JPanel();
         btn_destacados = new javax.swing.JPanel();
         txt_destacados = new javax.swing.JLabel();
@@ -114,6 +116,14 @@ public class GoogleUndead extends javax.swing.JFrame {
             }
         });
         pp_papelera.add(restaurar);
+
+        eliminar_papelera.setText("Eliminar");
+        eliminar_papelera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminar_papeleraActionPerformed(evt);
+            }
+        });
+        pp_papelera.add(eliminar_papelera);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("googleUndead");
@@ -410,26 +420,40 @@ public class GoogleUndead extends javax.swing.JFrame {
     }//GEN-LAST:event_miUnidad_treeMouseClicked
 
     private void carpetas_moverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_moverActionPerformed
-        if (bg_miUnidad.isVisible()) {
-            mover(miUnidad_tree);
-        } else {
-            mover(destacados_tree);
+        try {
+            if (bg_miUnidad.isVisible()) {
+                mover(miUnidad_tree);
+            } else {
+                mover(destacados_tree);
+            }
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_carpetas_moverActionPerformed
 
     private void archivos_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_eliminarActionPerformed
-        eliminarNodo(miUnidad_tree);
+        if (bg_miUnidad.isVisible()) {
+            eliminarNodo(miUnidad_tree);
+        } else {
+            eliminarNodo(destacados_tree);
+        }
     }//GEN-LAST:event_archivos_eliminarActionPerformed
 
     private void carpetas_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carpetas_eliminarActionPerformed
-        eliminarNodo(miUnidad_tree);
+        if (bg_miUnidad.isVisible()) {
+            eliminarNodo(miUnidad_tree);
+        } else {
+            eliminarNodo(destacados_tree);
+        }
     }//GEN-LAST:event_carpetas_eliminarActionPerformed
 
     private void archivos_moverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_moverActionPerformed
-        if (bg_miUnidad.isVisible()) {
-            mover(miUnidad_tree);
-        } else {
-            mover(destacados_tree);
+        try {
+            if (bg_miUnidad.isVisible()) {
+                mover(miUnidad_tree);
+            } else {
+                mover(destacados_tree);
+            }
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_archivos_moverActionPerformed
 
@@ -499,17 +523,24 @@ public class GoogleUndead extends javax.swing.JFrame {
                 = miUnidad_tree.getSelectionPath().
                         getLastPathComponent();
         DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
-
         int option = JOptionPane.showConfirmDialog(
                 this, "¿Desea crear una carpeta?", "Crear", JOptionPane.YES_NO_OPTION);
         String nombre;
+        String path = "";
         String link;
+
+        for (Carpeta carpeta : carpetas) {
+            //revisa si la carpeta es igual al objeto seleccionado del arbol
+            if (carpeta.equals((Carpeta) nodo_seleccionado.getUserObject())) {
+                path = carpeta.getLink();
+            }
+        }
         if (option == JOptionPane.YES_OPTION) {
             nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre:");
             link = cadenaAleatoria(5);
             Carpeta carpeta = new Carpeta(
                     nombre,
-                    "dive.google.com/" + link
+                    path.concat(link)
             );
             carpetas.add(carpeta);
 
@@ -524,7 +555,7 @@ public class GoogleUndead extends javax.swing.JFrame {
             link = cadenaAleatoria(10);
             Archivo archivo = new Archivo(
                     nombre,
-                    "dive.google.com/" + link,
+                    path + link,
                     JOptionPane.showInputDialog(this, "Ingrese la extensión:"),
                     Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
             );
@@ -571,6 +602,19 @@ public class GoogleUndead extends javax.swing.JFrame {
         mover(papelera_tree);
     }//GEN-LAST:event_restaurarActionPerformed
 
+    private void eliminar_papeleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar_papeleraActionPerformed
+        Object v1
+                = papelera_tree.getSelectionPath().
+                        getLastPathComponent();
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+
+        //elimina del arbol
+        DefaultTreeModel modeloArbol = (DefaultTreeModel) papelera_tree.getModel();
+        DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
+        raizArbol.remove(nodo_seleccionado);
+        modeloArbol.reload();
+    }//GEN-LAST:event_eliminar_papeleraActionPerformed
+
     private void eliminarNodo(JTree arbol) {
         Object v1
                 = arbol.getSelectionPath().
@@ -604,9 +648,9 @@ public class GoogleUndead extends javax.swing.JFrame {
         if (arbol.equals(miUnidad_tree)) {
             //agrega a miUnidad
             modelo = (DefaultTreeModel) destacados_tree.getModel();
-        } else if(arbol.equals(papelera_tree)){
+        } else if (arbol.equals(papelera_tree)) {
             modelo = (DefaultTreeModel) miUnidad_tree.getModel();
-        }else {
+        } else {
             modelo = (DefaultTreeModel) miUnidad_tree.getModel();
         }
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
@@ -653,6 +697,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JMenuItem carpetas_eliminar;
     private javax.swing.JMenuItem carpetas_mover;
     private javax.swing.JTree destacados_tree;
+    private javax.swing.JMenuItem eliminar_papelera;
     private javax.swing.JLabel img_logo;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
