@@ -1,5 +1,6 @@
 package modelos;
 
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
 /**
@@ -19,17 +20,14 @@ public class AdministrarJBar extends Thread {
     @Override
     public void run() {
         int contador = 0;
-        while (true) {
-            barra.setValue(contador + 1);
-            if (barra.getValue() <= (Math.round(largo)) / 10) {
-                break;
+        while (contador <= 100) {
+            barra.setValue(contador);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
             }
+            contador += 10;
         }
-        barra.setValue(MIN_PRIORITY);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-        }
+        JOptionPane.showMessageDialog(null, "¡Descarga completada!");
     }
-
 }
