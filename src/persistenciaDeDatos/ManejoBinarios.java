@@ -85,10 +85,6 @@ public class ManejoBinarios <T> {
         }
     }
 
-    public void eliminarDato() {
-
-    }
-
     public File getArchivo() {
         return archivo;
     }

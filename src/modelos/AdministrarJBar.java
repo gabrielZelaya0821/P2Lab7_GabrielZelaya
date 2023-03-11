@@ -18,15 +18,16 @@ public class AdministrarJBar extends Thread {
 
     @Override
     public void run() {
+        int contador = 0;
         while (true) {
-            barra.setValue(barra.getValue() + 1);
-            if (barra.getValue() == (Math.round(largo)) / 10) {
+            barra.setValue(contador + 1);
+            if (barra.getValue() <= (Math.round(largo)) / 10) {
                 break;
             }
         }
         barra.setValue(MIN_PRIORITY);
         try {
-            Thread.sleep(1);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
         }
     }

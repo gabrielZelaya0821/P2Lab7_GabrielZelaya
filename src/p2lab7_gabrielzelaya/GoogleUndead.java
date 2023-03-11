@@ -5,10 +5,11 @@
 package p2lab7_gabrielzelaya;
 
 import java.awt.Color;
-import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
-import javax.swing.DefaultListModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +18,8 @@ import javax.swing.tree.DefaultTreeModel;
 import modelos.AdministrarJBar;
 import modelos.Archivo;
 import modelos.Carpeta;
+import persistenciaDeDatos.ManejoArchivos;
+import persistenciaDeDatos.ManejoBinarios;
 
 /**
  *
@@ -29,6 +32,8 @@ public class GoogleUndead extends javax.swing.JFrame {
      */
     public GoogleUndead() {
         initComponents();
+        bg_mostrarDescargas.setVisible(false);
+        
     }
 
     /**
@@ -54,7 +59,7 @@ public class GoogleUndead extends javax.swing.JFrame {
         mostrar_descargas = new javax.swing.JDialog();
         bg_mostrarLista_descargas = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tabla_descargas = new javax.swing.JTable();
+        table_descargas = new javax.swing.JTable();
         bg_mostrarDescargas = new javax.swing.JPanel();
         salir_descargas = new javax.swing.JLabel();
         txt_mostrarDescargas = new javax.swing.JLabel();
@@ -144,14 +149,16 @@ public class GoogleUndead extends javax.swing.JFrame {
         });
         pp_papelera.add(eliminar_papelera);
 
-        bg_mostrarLista_descargas.setBackground(new java.awt.Color(255, 255, 255));
+        mostrar_descargas.setMinimumSize(new java.awt.Dimension(600, 500));
+        mostrar_descargas.setPreferredSize(new java.awt.Dimension(600, 500));
+        mostrar_descargas.setResizable(false);
 
-        tabla_descargas.setModel(new javax.swing.table.DefaultTableModel(
+        bg_mostrarLista_descargas.setBackground(new java.awt.Color(255, 255, 255));
+        bg_mostrarLista_descargas.setMinimumSize(new java.awt.Dimension(400, 500));
+
+        table_descargas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nombre", "Link", "Tamaño"
@@ -160,28 +167,40 @@ public class GoogleUndead extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane4.setViewportView(tabla_descargas);
+        jScrollPane4.setViewportView(table_descargas);
+        if (table_descargas.getColumnModel().getColumnCount() > 0) {
+            table_descargas.getColumnModel().getColumn(0).setResizable(false);
+            table_descargas.getColumnModel().getColumn(1).setResizable(false);
+            table_descargas.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout bg_mostrarLista_descargasLayout = new javax.swing.GroupLayout(bg_mostrarLista_descargas);
         bg_mostrarLista_descargas.setLayout(bg_mostrarLista_descargasLayout);
         bg_mostrarLista_descargasLayout.setHorizontalGroup(
             bg_mostrarLista_descargasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_mostrarLista_descargasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_mostrarLista_descargasLayout.createSequentialGroup()
+                .addContainerGap(75, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73))
         );
         bg_mostrarLista_descargasLayout.setVerticalGroup(
             bg_mostrarLista_descargasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_mostrarLista_descargasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_mostrarLista_descargasLayout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
         );
 
         javax.swing.GroupLayout mostrar_descargasLayout = new javax.swing.GroupLayout(mostrar_descargas.getContentPane());
@@ -337,7 +356,7 @@ public class GoogleUndead extends javax.swing.JFrame {
         barra_izquierda.add(btn_papelera, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 220, 50));
 
         img_logo.setFont(new java.awt.Font("Roboto Light", 0, 24)); // NOI18N
-        img_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drive_logo.png"))); // NOI18N
+        img_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/drive_logo.png"))); // NOI18N
         img_logo.setText("Undead");
         barra_izquierda.add(img_logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 190, 40));
 
@@ -501,7 +520,8 @@ public class GoogleUndead extends javax.swing.JFrame {
                     "dive.google.com/" + link
             );
             carpetas.add(carpeta);
-
+            carpetasBin.escribirBinario(carpeta);
+            
             DefaultMutableTreeNode c = new DefaultMutableTreeNode(carpeta);
             raiz.add(c);
         } else {
@@ -514,7 +534,8 @@ public class GoogleUndead extends javax.swing.JFrame {
                     Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
             );
             archivos.add(archivo);
-
+            archivosBin.escribirBinario(archivo);
+            
             DefaultMutableTreeNode a = new DefaultMutableTreeNode(archivo);
             raiz.add(a);
         }
@@ -733,10 +754,24 @@ public class GoogleUndead extends javax.swing.JFrame {
         DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
         raizArbol.remove(nodo_seleccionado);
         modeloArbol.reload();
+        
+        //elimina del binario
+        if(nodo_seleccionado.getUserObject() instanceof Carpeta){
+            try {
+                carpetasBin.eliminarDato(nodo_seleccionado.getUserObject());
+            } catch (Exception ex) {
+            }
+        }else{
+            try {
+                archivosBin.eliminarDato(nodo_seleccionado.getUserObject());
+            } catch (Exception ex) {
+            }
+        }
     }//GEN-LAST:event_eliminar_papeleraActionPerformed
 
     private void archivos_descargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_descargarActionPerformed
-       descargar();
+        bg_mostrarDescargas.setVisible(true);
+        descargar();
     }//GEN-LAST:event_archivos_descargarActionPerformed
 
     private void salir_descargasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salir_descargasMouseClicked
@@ -745,14 +780,29 @@ public class GoogleUndead extends javax.swing.JFrame {
 
     private void txt_mostrarDescargasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_mostrarDescargasMouseClicked
         mostrar_descargas.setSize(400,500);
+        mostrar_descargas.setLocationRelativeTo(this);
         mostrar_descargas.setVisible(true);
-        DefaultTableModel modelo = (DefaultTableModel) tabla_descargas.getModel();
+        
+        Object v1;
+        if(bg_miUnidad.isVisible()){
+            v1
+                = miUnidad_tree.getSelectionPath().
+                        getLastPathComponent();
+        }else{
+            v1
+                = destacados_tree.getSelectionPath().
+                        getLastPathComponent();
+        }
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+        descargas.add((Archivo)nodo_seleccionado.getUserObject());
+        
+        DefaultTableModel modelo = (DefaultTableModel) table_descargas.getModel();
         Object[] row;
         for (Archivo descarga : descargas) {
             row = new Object[]{descarga.getNombre().concat(descarga.getExtension()),descarga.getLink(),descarga.getTamaño()};
             modelo.addRow(row);
         }
-        tabla_descargas.setModel(modelo);
+        table_descargas.setModel(modelo);
     }//GEN-LAST:event_txt_mostrarDescargasMouseClicked
 
     private void descargar(){
@@ -768,6 +818,7 @@ public class GoogleUndead extends javax.swing.JFrame {
                     AdministrarJBar barra = new AdministrarJBar(pbar_descarga, archivo.getTamaño());
                     barra.start();
                 }
+                bitacora.escribirArchivo(archivo.getNombre().concat(archivo.getExtension()) +"|" + new Date().toString());
             }
         }else{
             v1 = destacados_tree.getSelectionPath().
@@ -884,7 +935,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JPopupMenu pp_papelera;
     private javax.swing.JMenuItem restaurar;
     private javax.swing.JLabel salir_descargas;
-    private javax.swing.JTable tabla_descargas;
+    private javax.swing.JTable table_descargas;
     private javax.swing.JLabel txt_destacados;
     private javax.swing.JLabel txt_miUnidad;
     private javax.swing.JLabel txt_mostrarDescargas;
@@ -894,4 +945,8 @@ public class GoogleUndead extends javax.swing.JFrame {
     private ArrayList<Carpeta> carpetas = new ArrayList<>();
     private ArrayList<Archivo> archivos = new ArrayList<>();
     private ArrayList<Archivo> descargas = new ArrayList<>();
+    
+    ManejoBinarios carpetasBin = new ManejoBinarios("Carpetas");
+    ManejoBinarios archivosBin = new ManejoBinarios("Archivos");
+    ManejoArchivos bitacora = new ManejoArchivos("Bitacora.txt");
 }
