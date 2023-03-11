@@ -1,12 +1,13 @@
 package modelos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author gabri
  */
-public class Carpeta {
+public class Carpeta implements Serializable{
     private String nombre;
     private String link;
     private ArrayList<Archivo> archivos;
@@ -17,13 +18,6 @@ public class Carpeta {
         this.link = link;
         this.archivos = new ArrayList<>();
         this.carpetas = new ArrayList<>();
-    }
-
-    public Carpeta(String nombre, String link, ArrayList<Archivo> archivos, ArrayList<Carpeta> carpetas) {
-        this.nombre = nombre;
-        this.link = link;
-        this.archivos = archivos;
-        this.carpetas = carpetas;
     }
 
     public String getNombre() {

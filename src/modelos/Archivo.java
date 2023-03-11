@@ -1,10 +1,12 @@
 package modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author gabri
  */
-public class Archivo {
+public class Archivo implements Serializable{
     private String nombre;
     private String link;
     private String extension;

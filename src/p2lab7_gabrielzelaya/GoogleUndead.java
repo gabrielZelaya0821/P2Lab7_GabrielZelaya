@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import modelos.AdministrarJBar;
 import modelos.Archivo;
 import modelos.Carpeta;
 
@@ -39,6 +40,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     private void initComponents() {
 
         pp_archivos = new javax.swing.JPopupMenu();
+        archivos_descargar = new javax.swing.JMenuItem();
         archivos_mover = new javax.swing.JMenuItem();
         archivos_eliminar = new javax.swing.JMenuItem();
         pp_carpetas = new javax.swing.JPopupMenu();
@@ -68,6 +70,15 @@ public class GoogleUndead extends javax.swing.JFrame {
         papelera_tree = new javax.swing.JTree();
         bg_descarga = new javax.swing.JPanel();
         pbar_descarga = new javax.swing.JProgressBar();
+        link_descarga = new javax.swing.JLabel();
+
+        archivos_descargar.setText("Descargar");
+        archivos_descargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archivos_descargarActionPerformed(evt);
+            }
+        });
+        pp_archivos.add(archivos_descargar);
 
         archivos_mover.setText("Mover");
         archivos_mover.addActionListener(new java.awt.event.ActionListener() {
@@ -334,11 +345,17 @@ public class GoogleUndead extends javax.swing.JFrame {
 
         bg_descarga.setBackground(new java.awt.Color(255, 255, 255));
 
+        link_descarga.setFont(new java.awt.Font("Roboto Light", 0, 12)); // NOI18N
+        link_descarga.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout bg_descargaLayout = new javax.swing.GroupLayout(bg_descarga);
         bg_descarga.setLayout(bg_descargaLayout);
         bg_descargaLayout.setHorizontalGroup(
             bg_descargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_descargaLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(link_descarga, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
             .addGroup(bg_descargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(bg_descargaLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -347,7 +364,9 @@ public class GoogleUndead extends javax.swing.JFrame {
         );
         bg_descargaLayout.setVerticalGroup(
             bg_descargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+            .addGroup(bg_descargaLayout.createSequentialGroup()
+                .addComponent(link_descarga, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 67, Short.MAX_VALUE))
             .addGroup(bg_descargaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(bg_descargaLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -615,6 +634,38 @@ public class GoogleUndead extends javax.swing.JFrame {
         modeloArbol.reload();
     }//GEN-LAST:event_eliminar_papeleraActionPerformed
 
+    private void archivos_descargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivos_descargarActionPerformed
+       descargar();
+    }//GEN-LAST:event_archivos_descargarActionPerformed
+
+    private void descargar(){
+        Object v1;
+        DefaultMutableTreeNode nodo_seleccionado;
+        if(bg_miUnidad.isVisible()){
+            v1 = miUnidad_tree.getSelectionPath().
+                        getLastPathComponent();
+            nodo_seleccionado = (DefaultMutableTreeNode) v1;
+            for (Archivo archivo : archivos) {
+                if( archivo.equals((Archivo) nodo_seleccionado.getUserObject()) ){
+                    link_descarga.setText(archivo.getLink());
+                    AdministrarJBar barra = new AdministrarJBar(pbar_descarga, archivo.getTamaño());
+                    barra.start();
+                }
+            }
+        }else{
+            v1 = destacados_tree.getSelectionPath().
+                        getLastPathComponent();
+            nodo_seleccionado = (DefaultMutableTreeNode) v1;
+            for (Archivo archivo : archivos) {
+                if( archivo.equals((Archivo) nodo_seleccionado.getUserObject()) ){
+                    link_descarga.setText(archivo.getLink());
+                    AdministrarJBar barra = new AdministrarJBar(pbar_descarga, archivo.getTamaño());
+                    barra.start();
+                }
+            }
+        }
+    }
+    
     private void eliminarNodo(JTree arbol) {
         Object v1
                 = arbol.getSelectionPath().
@@ -682,6 +733,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem archivos_descargar;
     private javax.swing.JMenuItem archivos_eliminar;
     private javax.swing.JMenuItem archivos_mover;
     private javax.swing.JPanel barra_izquierda;
@@ -699,10 +751,10 @@ public class GoogleUndead extends javax.swing.JFrame {
     private javax.swing.JTree destacados_tree;
     private javax.swing.JMenuItem eliminar_papelera;
     private javax.swing.JLabel img_logo;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel link_descarga;
     private javax.swing.JTree miUnidad_tree;
     private javax.swing.JTree papelera_tree;
     private javax.swing.JProgressBar pbar_descarga;
