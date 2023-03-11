@@ -25,9 +25,6 @@ public class GoogleUndead extends javax.swing.JFrame {
         initComponents();
         bg_mostrarDescargas.setVisible(false);
         agregarBinarioALista();
-        for (Carpeta carpeta : carpetas) {
-            
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -856,6 +853,30 @@ public class GoogleUndead extends javax.swing.JFrame {
         }
         carpetas = carpetasBin.getDatos();
         archivos = archivosBin.getDatos();
+        
+        DefaultTreeModel modelo = (DefaultTreeModel)miUnidad_tree.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)modelo.getRoot();
+        for (Carpeta carpeta : carpetas) {
+            DefaultMutableTreeNode nodo = new DefaultMutableTreeNode(carpeta);
+            raiz.add(nodo);
+            if(carpeta.getCarpetas()!=null || carpeta.getArchivos() != null){
+                DefaultMutableTreeNode child;
+                for (Archivo a : carpeta.getArchivos()) {
+                    child = new DefaultMutableTreeNode(a);
+                    nodo.add(child);
+                }
+                for (Carpeta c : carpeta.getCarpetas()) {
+                    System.out.println("hola");
+                    child = new DefaultMutableTreeNode(c);
+                    nodo.add(child);
+                }
+                
+            }
+        }
+        for (Archivo archivo : archivos) {
+            raiz.add(new DefaultMutableTreeNode(archivo));
+        }
+        modelo.reload();
     }
     
     private void mover(JTree arbol) {
