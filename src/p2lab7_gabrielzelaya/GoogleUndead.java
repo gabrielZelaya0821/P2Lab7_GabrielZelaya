@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package p2lab7_gabrielzelaya;
 
 import java.awt.Color;
@@ -25,11 +21,10 @@ import persistenciaDeDatos.ManejoBinarios;
  */
 public class GoogleUndead extends javax.swing.JFrame {
 
-    public GoogleUndead() {
+    public GoogleUndead() throws Exception {
         initComponents();
         bg_mostrarDescargas.setVisible(false);
-        
-        
+        agregarBinarioALista();
     }
 
     @SuppressWarnings("unchecked")
@@ -512,7 +507,7 @@ public class GoogleUndead extends javax.swing.JFrame {
             );
             carpetas.add(carpeta);
             carpetasBin.escribirBinario(carpeta);
-            
+
             DefaultMutableTreeNode c = new DefaultMutableTreeNode(carpeta);
             raiz.add(c);
         } else {
@@ -526,7 +521,7 @@ public class GoogleUndead extends javax.swing.JFrame {
             );
             archivos.add(archivo);
             archivosBin.escribirBinario(archivo);
-            
+
             DefaultMutableTreeNode a = new DefaultMutableTreeNode(archivo);
             raiz.add(a);
         }
@@ -675,6 +670,7 @@ public class GoogleUndead extends javax.swing.JFrame {
                     path.concat(link)
             );
             carpetas.add(carpeta);
+            carpetasBin.escribirBinario(carpeta);
 
             DefaultMutableTreeNode c = new DefaultMutableTreeNode(carpeta);
             for (int i = 0; i < raiz.getChildCount(); i++) {
@@ -692,6 +688,7 @@ public class GoogleUndead extends javax.swing.JFrame {
                     Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el tamaño:"))
             );
             archivos.add(archivo);
+            archivosBin.escribirBinario(archivo);
 
             DefaultMutableTreeNode a = new DefaultMutableTreeNode(archivo);
             for (int i = 0; i < raiz.getChildCount(); i++) {
@@ -745,14 +742,14 @@ public class GoogleUndead extends javax.swing.JFrame {
         DefaultMutableTreeNode raizArbol = (DefaultMutableTreeNode) modeloArbol.getRoot();
         raizArbol.remove(nodo_seleccionado);
         modeloArbol.reload();
-        
+
         //elimina del binario
-        if(nodo_seleccionado.getUserObject() instanceof Carpeta){
+        if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
             try {
                 carpetasBin.eliminarDato(nodo_seleccionado.getUserObject());
             } catch (Exception ex) {
             }
-        }else{
+        } else {
             try {
                 archivosBin.eliminarDato(nodo_seleccionado.getUserObject());
             } catch (Exception ex) {
@@ -770,53 +767,53 @@ public class GoogleUndead extends javax.swing.JFrame {
     }//GEN-LAST:event_salir_descargasMouseClicked
 
     private void txt_mostrarDescargasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_mostrarDescargasMouseClicked
-        mostrar_descargas.setSize(400,500);
+        mostrar_descargas.setSize(400, 500);
         mostrar_descargas.setLocationRelativeTo(this);
         mostrar_descargas.setVisible(true);
-        
+
         Object v1;
-        if(bg_miUnidad.isVisible()){
+        if (bg_miUnidad.isVisible()) {
             v1
-                = miUnidad_tree.getSelectionPath().
-                        getLastPathComponent();
-        }else{
+                    = miUnidad_tree.getSelectionPath().
+                            getLastPathComponent();
+        } else {
             v1
-                = destacados_tree.getSelectionPath().
-                        getLastPathComponent();
+                    = destacados_tree.getSelectionPath().
+                            getLastPathComponent();
         }
         DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
-        descargas.add((Archivo)nodo_seleccionado.getUserObject());
-        
+        descargas.add((Archivo) nodo_seleccionado.getUserObject());
+
         DefaultTableModel modelo = (DefaultTableModel) table_descargas.getModel();
         Object[] row;
         for (Archivo descarga : descargas) {
-            row = new Object[]{descarga.getNombre().concat(descarga.getExtension()),descarga.getLink(),descarga.getTamaño()};
+            row = new Object[]{descarga.getNombre().concat(descarga.getExtension()), descarga.getLink(), descarga.getTamaño()};
             modelo.addRow(row);
         }
         table_descargas.setModel(modelo);
     }//GEN-LAST:event_txt_mostrarDescargasMouseClicked
 
-    private void descargar(){
+    private void descargar() {
         Object v1;
         DefaultMutableTreeNode nodo_seleccionado;
-        if(bg_miUnidad.isVisible()){
+        if (bg_miUnidad.isVisible()) {
             v1 = miUnidad_tree.getSelectionPath().
-                        getLastPathComponent();
+                    getLastPathComponent();
             nodo_seleccionado = (DefaultMutableTreeNode) v1;
             for (Archivo archivo : archivos) {
-                if( archivo.equals((Archivo) nodo_seleccionado.getUserObject()) ){
+                if (archivo.equals((Archivo) nodo_seleccionado.getUserObject())) {
                     link_descarga.setText(archivo.getLink());
                     AdministrarJBar barra = new AdministrarJBar(pbar_descarga, archivo.getTamaño());
                     barra.start();
                 }
-                bitacora.escribirArchivo(archivo.getNombre().concat(archivo.getExtension()) +"|" + new Date().toString());
+                bitacora.escribirArchivo(archivo.getNombre().concat(archivo.getExtension()) + "|" + new Date().toString());
             }
-        }else{
+        } else {
             v1 = destacados_tree.getSelectionPath().
-                        getLastPathComponent();
+                    getLastPathComponent();
             nodo_seleccionado = (DefaultMutableTreeNode) v1;
             for (Archivo archivo : archivos) {
-                if( archivo.equals((Archivo) nodo_seleccionado.getUserObject()) ){
+                if (archivo.equals((Archivo) nodo_seleccionado.getUserObject())) {
                     link_descarga.setText(archivo.getLink());
                     AdministrarJBar barra = new AdministrarJBar(pbar_descarga, archivo.getTamaño());
                     barra.start();
@@ -824,7 +821,7 @@ public class GoogleUndead extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void eliminarNodo(JTree arbol) {
         Object v1
                 = arbol.getSelectionPath().
@@ -843,6 +840,19 @@ public class GoogleUndead extends javax.swing.JFrame {
         modelo.reload();
     }
 
+    private void agregarBinarioALista(){
+        try {
+            carpetasBin.obtenerDatos();
+        } catch (Exception ex) {
+        }
+        try{
+            archivosBin.obtenerDatos();
+        }catch(Exception e){
+        }
+        carpetas = carpetasBin.getDatos();
+        archivos = archivosBin.getDatos();
+    }
+    
     private void mover(JTree arbol) {
         Object v1
                 = arbol.getSelectionPath().
@@ -887,7 +897,10 @@ public class GoogleUndead extends javax.swing.JFrame {
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(() -> {
-            new GoogleUndead().setVisible(true);
+            try {
+                new GoogleUndead().setVisible(true);
+            } catch (Exception ex) {
+            }
         });
     }
 
@@ -936,7 +949,7 @@ public class GoogleUndead extends javax.swing.JFrame {
     private ArrayList<Carpeta> carpetas = new ArrayList<>();
     private ArrayList<Archivo> archivos = new ArrayList<>();
     private ArrayList<Archivo> descargas = new ArrayList<>();
-    
+
     ManejoBinarios carpetasBin = new ManejoBinarios("Carpetas.lab7");
     ManejoBinarios archivosBin = new ManejoBinarios("Archivos.lab7");
     ManejoArchivos bitacora = new ManejoArchivos("Bitacora.txt");
